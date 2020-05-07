@@ -332,6 +332,12 @@
       "languageVersion": "2.0"
     },
     {
+      "name": "uuid",
+      "rootUri": "file:///Users/elliotcunningham/.pub-cache/hosted/pub.dartlang.org/uuid-2.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "vm_service_client",
       "rootUri": "file:///Users/elliotcunningham/.pub-cache/hosted/pub.dartlang.org/vm_service_client-0.2.6+3",
       "packageUri": "lib/",
@@ -362,7 +368,7 @@
       "languageVersion": "2.0"
     }
   ],
-  "generated": "2020-05-07T09:10:04.774200Z",
+  "generated": "2020-05-07T11:22:00.108142Z",
   "generator": "pub",
-  "generatorVersion": "2.8.1"
+  "generatorVersion": "2.7.2"
 }

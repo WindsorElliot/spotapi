@@ -1,0 +1,9 @@
+CREATE DATABASE rightspot;
+CREATE USER admin_rightspot WITH PASSWORD 'rightspotpassword';
+GRANT ALL ON DATABASE rightspot TO admin_rightspot;
+
+brew services start postgresql@9.6
+
+aqueduct db generate
+
+aqueduct db upgrade --connect postgres://admin_rightspot:rightspotpassword@localhost:5432/rightspot

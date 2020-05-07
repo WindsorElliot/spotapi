@@ -1,4 +1,4 @@
-import 'package:aqueduct/managed_auth.dart';
+import 'package:spotapi/controller/RegisterController.dart';
 import 'package:spotapi/controller/SpotController.dart';
 import 'package:spotapi/model/user.dart';
 
@@ -13,7 +13,6 @@ class SpotapiChannel extends ApplicationChannel {
   Future prepare() async {
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
 
-    final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
     final persistentStore = PostgreSQLPersistentStore.fromConnectionInfo(
       "admin_rightspot", 
       "rightspotpassword", 
@@ -21,9 +20,10 @@ class SpotapiChannel extends ApplicationChannel {
       5432, 
       "rightspot"
     );
-    final authStorage = ManagedAuthDelegate<User>(context);
 
+    final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
     context = ManagedContext(dataModel, persistentStore);
+    final authStorage = ManagedAuthDelegate<User>(context);
     authServer = AuthServer(authStorage);
 
   }
@@ -34,12 +34,21 @@ class SpotapiChannel extends ApplicationChannel {
 
     router
       .route("/spot/[:id]")
+      .link(() => Authorizer.bearer(authServer))
       .link(() => SpotController(context: context));
 
     router
-      .route("/example")
+      .route("/register")
+      .link(() => RegisterController(context: context, authServer: authServer));
+
+    router
+      .route("/auth/token")
+      .link(() => AuthController(authServer));
+
+    router
+      .route("/isAlive")
       .linkFunction((request) async {
-        return Response.ok({"key": "value"});
+        return Response.ok({"live": "true"});
       });
 
     return router;

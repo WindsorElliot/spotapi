@@ -1,4 +1,3 @@
-import 'package:spotapi/model/spot.dart';
 import 'package:spotapi/spotapi.dart';
 
 class SpotController extends ResourceController {

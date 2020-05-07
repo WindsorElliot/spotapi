@@ -4,6 +4,11 @@ GRANT ALL ON DATABASE rightspot TO admin_rightspot;
 
 brew services start postgresql@9.6
 
+create migration file
 aqueduct db generate
 
+run migration
 aqueduct db upgrade --connect postgres://admin_rightspot:rightspotpassword@localhost:5432/rightspot
+
+add auth/token credential in database
+aqueduct auth add-client --id com.rightspot.postman --connect postgres://admin_rightspot:rightspotpassword@localhost:5432/rightspot

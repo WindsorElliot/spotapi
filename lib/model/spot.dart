@@ -1,11 +1,7 @@
 import 'package:aqueduct/aqueduct.dart';
+import 'package:spotapi/model/geoloc.dart';
 import 'package:spotapi/model/user.dart';
 import 'package:uuid/uuid.dart';
-
-enum SpotCodingKeys {
-  name,
-  note
-}
 
 class Spot extends ManagedObject<_Spot> implements _Spot {
   Spot() {
@@ -32,6 +28,12 @@ class _Spot {
   @Column(indexed: true, nullable: false, unique: true)
   String clientID;
 
+  @Column(indexed: false, nullable: true)
+  String description;
+
   @Relate(#spots, isRequired: true, onDelete: DeleteRule.cascade)
   User user;
+
+  @Relate(#spot, isRequired: true, onDelete: DeleteRule.cascade)
+  Geoloc geoloc;
 }

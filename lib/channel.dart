@@ -1,3 +1,4 @@
+import 'package:spotapi/controller/GeolocController.dart';
 import 'package:spotapi/controller/RegisterController.dart';
 import 'package:spotapi/controller/SpotController.dart';
 import 'package:spotapi/model/user.dart';
@@ -36,6 +37,12 @@ class SpotapiChannel extends ApplicationChannel {
       .route("/spot/[:id]")
       .link(() => Authorizer.bearer(authServer))
       .link(() => SpotController(context: context));
+
+    router
+      .route("/geoloc/[:id]")
+      .link(() => Authorizer.bearer(authServer))
+      .link(() => GeolocController(context: context));
+
 
     router
       .route("/register")

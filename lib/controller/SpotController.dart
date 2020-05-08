@@ -1,3 +1,4 @@
+import 'package:spotapi/model/geoloc.dart';
 import 'package:spotapi/spotapi.dart';
 
 class SpotController extends ResourceController {
@@ -6,17 +7,12 @@ class SpotController extends ResourceController {
   final ManagedContext context;
 
   @Operation.get()
-  Future<Response> getAllSpots({ @Bind.query('name') String name, @Bind.query('clientID') String clientID }) async {
+  Future<Response> getAllSpots({ @Bind.query('name') String name}) async {
     final query = Query<Spot>(context);
     if (null != name) {
       query.where((spot) => spot.name).contains(name, caseSensitive: false);
     } 
-    if (null != clientID) {
-      query.where((spot) => spot.clientID).equalTo(clientID);
-    }
-    final spots = (clientID != null) 
-      ? await query.fetchOne()
-      : await query.fetch();
+    final spots = await query.fetch();
 
     return Response.ok(spots);
   }
@@ -34,7 +30,20 @@ class SpotController extends ResourceController {
   }
 
   @Operation.post()
-  Future<Response> createSpot(@Bind.body(ignore: ['id']) Spot spot) async {
+  Future<Response> createSpot(@Bind.body(ignore: ['id']) Spot spot, @Bind.query('geolocId') int geolocId) async {
+    final ownerId = request.authorization.ownerID;
+    final userQuery = Query<User>(context)..where((aUser) => aUser.id).equalTo(ownerId);
+    final user = await userQuery.fetchOne();
+    final geolocQuery = Query<Geoloc>(context)..where((g) => g.id).equalTo(geolocId);
+    final geoloc = await geolocQuery.fetchOne();
+
+    if (null == geoloc || null == user) {
+      return Response.badRequest();
+    }
+
+    spot.user = user;
+    spot.geoloc = geoloc;
+
     final query = Query<Spot>(context)
       ..values = spot;
 

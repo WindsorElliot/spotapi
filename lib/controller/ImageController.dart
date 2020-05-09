@@ -8,12 +8,16 @@ class ImageController extends ResourceController {
 
   @Operation.get()
   Future<Response> getImages({
-    @Bind.query('includeSpot') int includeSpot
+    @Bind.query('includeSpot') int includeSpot,
+    @Bind.query('includeUser') int includeUser
   }) async {
     final query = Query<Image>(context);
 
     if (null != includeSpot && 0 != includeSpot) {
       query.join(object: (i) => i.spot);
+    }
+    if (null != includeUser && 0 != includeUser) {
+      query.join(object: (i) => i.user);
     }
 
     final images = await query.fetch();
@@ -34,8 +38,8 @@ class ImageController extends ResourceController {
     final image = await query.fetchOne();
 
     return (null != image)
-      ? Response.notFound()
-      : Response.ok(image);
+      ? Response.ok(image)
+      : Response.notFound();
   }
 
   @Operation.post()

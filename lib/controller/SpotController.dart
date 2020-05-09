@@ -11,7 +11,8 @@ class SpotController extends ResourceController {
     @Bind.query('name') String name,
     @Bind.query('includeComments') int includeComments,
     @Bind.query('includeUser') int includeUser,
-    @Bind.query('includeGeoloc') int includeGeoloc
+    @Bind.query('includeGeoloc') int includeGeoloc,
+    @Bind.query('includeImage') int includeImage
   }) async {
     final query = Query<Spot>(context);
     if (null != name) {
@@ -26,15 +27,35 @@ class SpotController extends ResourceController {
     if (null != includeGeoloc && 0 != includeGeoloc) {
       query.join(object: (s) => s.geoloc);
     }
+    if (null != includeImage && 0 != includeImage) {
+      query.join(set: (s) => s.images);
+    }
     final spots = await query.fetch();
 
     return Response.ok(spots);
   }
 
   @Operation.get('id')
-  Future<Response> getSpotByID(@Bind.path('id') int id) async {
-    final query = Query<Spot>(context)
-      ..where((aSpot) => aSpot.id).equalTo(id);
+  Future<Response> getSpotByID(@Bind.path('id') int id, {
+    @Bind.query('includeComments') int includeComments,
+    @Bind.query('includeUser') int includeUser,
+    @Bind.query('includeGeoloc') int includeGeoloc,
+    @Bind.query('includeImage') int includeImage
+  }) async {
+    final query = Query<Spot>(context)..where((aSpot) => aSpot.id).equalTo(id);
+
+    if (null != includeComments && 0 != includeComments) {
+      query.join(set: (s) => s.comments);
+    }
+    if (null != includeUser && 0 != includeUser) {
+      query.join(object: (s) => s.user);
+    }
+    if (null != includeGeoloc && 0 != includeGeoloc) {
+      query.join(object: (s) => s.geoloc);
+    }
+    if (null != includeImage && 0 != includeImage) {
+      query.join(set: (s) => s.images);
+    }
 
     final aSpot = await query.fetchOne();
 

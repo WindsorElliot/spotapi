@@ -1,5 +1,6 @@
 import 'package:spotapi/controller/CommentController.dart';
 import 'package:spotapi/controller/GeolocController.dart';
+import 'package:spotapi/controller/ImageController.dart';
 import 'package:spotapi/controller/RegisterController.dart';
 import 'package:spotapi/controller/SpotController.dart';
 import 'package:spotapi/model/user.dart';
@@ -48,6 +49,11 @@ class SpotapiChannel extends ApplicationChannel {
       .route("/comment/[:id]")
       .link(() => Authorizer.bearer(authServer))
       .link(() => CommentController(context: context));
+    
+    router
+      .route("/image/[:id]")
+      .link(() => Authorizer.bearer(authServer))
+      .link(() => ImageController(context: context));
 
     router
       .route("/register")

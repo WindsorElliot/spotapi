@@ -1,6 +1,7 @@
 import 'package:aqueduct/aqueduct.dart';
 import 'package:spotapi/model/comment.dart';
 import 'package:spotapi/model/geoloc.dart';
+import 'package:spotapi/model/image.dart';
 import 'package:spotapi/model/user.dart';
 import 'package:uuid/uuid.dart';
 
@@ -39,5 +40,7 @@ class _Spot {
   Geoloc geoloc;
 
   ManagedSet<Comment> comments;
+
+  ManagedSet<Image> images;
 
 }

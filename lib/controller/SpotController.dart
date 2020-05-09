@@ -7,11 +7,25 @@ class SpotController extends ResourceController {
   final ManagedContext context;
 
   @Operation.get()
-  Future<Response> getAllSpots({ @Bind.query('name') String name}) async {
+  Future<Response> getAllSpots({
+    @Bind.query('name') String name,
+    @Bind.query('includeComments') int includeComments,
+    @Bind.query('includeUser') int includeUser,
+    @Bind.query('includeGeoloc') int includeGeoloc
+  }) async {
     final query = Query<Spot>(context);
     if (null != name) {
       query.where((spot) => spot.name).contains(name, caseSensitive: false);
-    } 
+    }
+    if (null != includeComments && 0 != includeComments) {
+      query.join(set: (s) => s.comments);
+    }
+    if (null != includeUser && 0 != includeUser) {
+      query.join(object: (s) => s.user);
+    }
+    if (null != includeGeoloc && 0 != includeGeoloc) {
+      query.join(object: (s) => s.geoloc);
+    }
     final spots = await query.fetch();
 
     return Response.ok(spots);

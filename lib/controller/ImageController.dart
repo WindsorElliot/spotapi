@@ -1,4 +1,5 @@
 import 'package:spotapi/model/image.dart';
+import 'package:spotapi/model/spot.dart';
 import 'package:spotapi/spotapi.dart';
 
 class ImageController extends ResourceController {

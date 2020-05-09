@@ -1,3 +1,4 @@
+import 'package:spotapi/model/spot.dart';
 import 'package:spotapi/spotapi.dart';
 
 class Geoloc extends ManagedObject<_Geoloc> implements _Geoloc {

@@ -1,3 +1,4 @@
+import 'package:spotapi/controller/CarpoolingController.dart';
 import 'package:spotapi/controller/CommentController.dart';
 import 'package:spotapi/controller/GeolocController.dart';
 import 'package:spotapi/controller/ImageController.dart';
@@ -54,6 +55,11 @@ class SpotapiChannel extends ApplicationChannel {
       .route("/image/[:id]")
       .link(() => Authorizer.bearer(authServer))
       .link(() => ImageController(context: context));
+
+    router
+      .route("/carpooling/[:id]")
+      .link(() => Authorizer.bearer(authServer))
+      .link(() => CarpoolingController(context: context));
 
     router
       .route("/register")

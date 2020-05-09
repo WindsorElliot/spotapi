@@ -1,4 +1,6 @@
 import 'package:spotapi/model/geoloc.dart';
+import 'package:spotapi/model/spot.dart';
+import 'package:spotapi/model/user.dart';
 import 'package:spotapi/spotapi.dart';
 
 class SpotController extends ResourceController {
@@ -12,7 +14,8 @@ class SpotController extends ResourceController {
     @Bind.query('includeComments') int includeComments,
     @Bind.query('includeUser') int includeUser,
     @Bind.query('includeGeoloc') int includeGeoloc,
-    @Bind.query('includeImage') int includeImage
+    @Bind.query('includeImage') int includeImage,
+    @Bind.query('includeCarpooling') int includeCarpooling
   }) async {
     final query = Query<Spot>(context);
     if (null != name) {
@@ -30,6 +33,10 @@ class SpotController extends ResourceController {
     if (null != includeImage && 0 != includeImage) {
       query.join(set: (s) => s.images);
     }
+    if (null != includeCarpooling && 0 != includeCarpooling) {
+      query.join(set: (s) => s.carpoolings);
+    }
+    
     final spots = await query.fetch();
 
     return Response.ok(spots);

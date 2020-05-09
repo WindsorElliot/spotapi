@@ -1,3 +1,4 @@
+import 'package:spotapi/model/user.dart';
 import 'package:spotapi/spotapi.dart';
 
 class RegisterController extends ResourceController {

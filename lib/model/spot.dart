@@ -1,4 +1,5 @@
 import 'package:aqueduct/aqueduct.dart';
+import 'package:spotapi/model/carpooling.dart';
 import 'package:spotapi/model/comment.dart';
 import 'package:spotapi/model/geoloc.dart';
 import 'package:spotapi/model/image.dart';
@@ -42,5 +43,7 @@ class _Spot {
   ManagedSet<Comment> comments;
 
   ManagedSet<Image> images;
+
+  ManagedSet<Carpooling> carpoolings;
 
 }

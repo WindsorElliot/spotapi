@@ -1,3 +1,5 @@
+import 'package:spotapi/model/spot.dart';
+import 'package:spotapi/model/user.dart';
 import 'package:spotapi/spotapi.dart';
 
 class Image extends ManagedObject<_Image> implements _Image {

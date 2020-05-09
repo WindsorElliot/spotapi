@@ -1,4 +1,5 @@
 import 'package:aqueduct/aqueduct.dart';
+import 'package:spotapi/model/comment.dart';
 import 'package:spotapi/model/geoloc.dart';
 import 'package:spotapi/model/user.dart';
 import 'package:uuid/uuid.dart';
@@ -36,4 +37,7 @@ class _Spot {
 
   @Relate(#spot, isRequired: true, onDelete: DeleteRule.cascade)
   Geoloc geoloc;
+
+  ManagedSet<Comment> comments;
+
 }

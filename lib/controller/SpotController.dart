@@ -55,6 +55,11 @@ class SpotController extends ResourceController {
   @Operation.put('id')
   Future<Response> updateSpot(@Bind.path('id') int id, @Bind.body() Map<String, dynamic> body) async {
     final query = Query<Spot>(context);
+
+    if (false == body.containsKey('name') && false == body.containsKey('note')) {
+      return Response.badRequest(body: { "error": "body must contain a name or a note" });
+    }
+
     if (body['name'] != null) {
       query.values.name = body['name'] as String;
     }

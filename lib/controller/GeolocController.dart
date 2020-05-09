@@ -47,26 +47,29 @@ class GeolocController extends ResourceController {
     return Response.ok(inserted);
   }
 
-  @Operation.put()
-  Future<Response> updateGeoloc(@Bind.body() Map<String, dynamic> data) async {
-    if (null != data['id']) {
-      final id = data['id'] as int;
-      final query = Query<Geoloc>(context)..where((g) => g.id).equalTo(id);
-      if (data['lattitude'] != null) {
-        query.values.lattitude = data['latittude'] as double;
-      }
-      if (data['longitude'] != null) {
-        query.values.longitude = data['longitude'] as double;
-      }
+  @Operation.put('id')
+  Future<Response> updateGeoloc(
+    @Bind.path('id') int id,
+    @Bind.body() Map<String, dynamic> data
+  ) async {
+    final query = Query<Geoloc>(context)..where((g) => g.id).equalTo(id);
 
-      final updated = query.updateOne();
-
-      return (null != updated) 
-        ? Response.ok(updated)
-        : Response.notFound();
+    if (false == data.containsKey('lattitude') && false == data.containsKey('longitude')) {
+      return Response.badRequest(body: { "error": "body must contains a lattitude or a longitude" });
     }
 
-    return Response.badRequest(body: { "error": "bad format for geoloc" });
+    if (data['lattitude'] != null) {
+      query.values.lattitude = data['latittude'] as double;
+    }
+    if (data['longitude'] != null) {
+      query.values.longitude = data['longitude'] as double;
+    }
+
+    final updated = query.updateOne();
+
+    return (null != updated) 
+      ? Response.ok(updated)
+      : Response.notFound();
   }
 
   @Operation.delete('id')

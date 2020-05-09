@@ -13,6 +13,9 @@ class _Comment {
   @Column(indexed: false, nullable: false)
   String comment;
 
-  @Relate(#comments, isRequired: true)
+  @Relate(#comments, isRequired: true, onDelete: DeleteRule.cascade)
   User user;
+
+  @Relate(#comments, isRequired: true, onDelete: DeleteRule.cascade)
+  Spot spot;
 }

@@ -1,5 +1,6 @@
 import 'package:spotapi/controller/CarpoolingController.dart';
 import 'package:spotapi/controller/CommentController.dart';
+import 'package:spotapi/controller/DepartementController.dart';
 import 'package:spotapi/controller/GeolocController.dart';
 import 'package:spotapi/controller/ImageController.dart';
 import 'package:spotapi/controller/RegisterController.dart';
@@ -17,12 +18,13 @@ class SpotapiChannel extends ApplicationChannel {
   Future prepare() async {
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
 
+    final config = SpotApiConfig(options.configurationFilePath);
     final persistentStore = PostgreSQLPersistentStore.fromConnectionInfo(
-      "admin_rightspot", 
-      "rightspotpassword", 
-      "localhost", 
-      5432, 
-      "rightspot"
+      config.database.username,
+      config.database.password, 
+      config.database.host, 
+      config.database.port, 
+      config.database.databaseName
     );
 
     final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
@@ -62,6 +64,11 @@ class SpotapiChannel extends ApplicationChannel {
       .link(() => CarpoolingController(context: context));
 
     router
+      .route("departement/[:id]")
+      .link(() => Authorizer.bearer(authServer))
+      .link(() => DepartementController(context: context));
+
+    router
       .route("/register")
       .link(() => RegisterController(context: context, authServer: authServer));
 
@@ -77,4 +84,10 @@ class SpotapiChannel extends ApplicationChannel {
 
     return router;
   }
+}
+
+class SpotApiConfig extends Configuration {
+  SpotApiConfig(String filePath) : super.fromFile(File(filePath));
+
+  DatabaseConfiguration database;
 }

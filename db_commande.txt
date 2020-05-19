@@ -12,3 +12,8 @@ aqueduct db upgrade --connect postgres://admin_rightspot:rightspotpassword@local
 
 add auth/token credential in database
 aqueduct auth add-client --id com.rightspot.postman --connect postgres://admin_rightspot:rightspotpassword@localhost:5432/rightspot
+
+aqueduct auth add-client --id com.rightspot.iosapp --secret c2VjcmV0Zm9ycmlnaHRzcG90 --connect postgres://admin_rightspot:rightspotpassword@localhost:5432/rightspot
+
+
+secret c2VjcmV0Zm9ycmlnaHRzcG90

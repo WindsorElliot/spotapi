@@ -1,6 +1,7 @@
 import 'package:aqueduct/aqueduct.dart';
 import 'package:spotapi/model/carpooling.dart';
 import 'package:spotapi/model/comment.dart';
+import 'package:spotapi/model/departement.dart';
 import 'package:spotapi/model/geoloc.dart';
 import 'package:spotapi/model/image.dart';
 import 'package:spotapi/model/user.dart';
@@ -45,5 +46,8 @@ class _Spot {
   ManagedSet<Image> images;
 
   ManagedSet<Carpooling> carpoolings;
+
+  @Relate(#spots, isRequired: true, onDelete: DeleteRule.cascade)
+  Departement departement;
 
 }

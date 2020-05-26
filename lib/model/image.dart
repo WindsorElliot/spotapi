@@ -3,7 +3,9 @@ import 'package:spotapi/model/user.dart';
 import 'package:spotapi/spotapi.dart';
 
 class Image extends ManagedObject<_Image> implements _Image {
-
+  Image() {
+    isDefault ??= true;
+  }
 }
 
 class _Image {
@@ -13,6 +15,9 @@ class _Image {
 
   @Column(indexed: true, nullable: false)
   String name;
+
+  @Column(indexed: true, nullable: false)
+  bool isDefault;
 
   @Column(indexed: false, nullable: false)
   String url;

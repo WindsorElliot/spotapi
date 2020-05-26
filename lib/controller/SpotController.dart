@@ -1,3 +1,4 @@
+import 'package:spotapi/model/departement.dart';
 import 'package:spotapi/model/geoloc.dart';
 import 'package:spotapi/model/spot.dart';
 import 'package:spotapi/model/user.dart';
@@ -15,7 +16,8 @@ class SpotController extends ResourceController {
     @Bind.query('includeUser') int includeUser,
     @Bind.query('includeGeoloc') int includeGeoloc,
     @Bind.query('includeImage') int includeImage,
-    @Bind.query('includeCarpooling') int includeCarpooling
+    @Bind.query('includeCarpooling') int includeCarpooling,
+    @Bind.query('includeDepartement') int includeDepartement
   }) async {
     final query = Query<Spot>(context);
     if (null != name) {
@@ -35,6 +37,9 @@ class SpotController extends ResourceController {
     }
     if (null != includeCarpooling && 0 != includeCarpooling) {
       query.join(set: (s) => s.carpoolings);
+    }
+    if (null != includeDepartement && 0 != includeCarpooling) {
+      query.join(object: (s) => s.departement);
     }
     
     final spots = await query.fetch();
@@ -72,19 +77,26 @@ class SpotController extends ResourceController {
   }
 
   @Operation.post()
-  Future<Response> createSpot(@Bind.body(ignore: ['id']) Spot spot, @Bind.query('geolocId') int geolocId) async {
+  Future<Response> createSpot(
+    @Bind.body(ignore: ['id']) Spot spot, 
+    @Bind.query('geolocId') int geolocId, 
+    @Bind.query('departementId') int departementId
+  ) async {
     final ownerId = request.authorization.ownerID;
     final userQuery = Query<User>(context)..where((aUser) => aUser.id).equalTo(ownerId);
     final user = await userQuery.fetchOne();
     final geolocQuery = Query<Geoloc>(context)..where((g) => g.id).equalTo(geolocId);
     final geoloc = await geolocQuery.fetchOne();
+    final departementQuery = Query<Departement>(context)..where((d) => d.id).equalTo(departementId);
+    final departement = await departementQuery.fetchOne();
 
-    if (null == geoloc || null == user) {
+    if (null == geoloc || null == user || null == departement) {
       return Response.badRequest();
     }
 
     spot.user = user;
     spot.geoloc = geoloc;
+    spot.departement = departement;
 
     final query = Query<Spot>(context)
       ..values = spot;

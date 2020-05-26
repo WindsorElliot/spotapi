@@ -24,7 +24,7 @@ class SpotController extends ResourceController {
       query.where((spot) => spot.name).contains(name, caseSensitive: false);
     }
     if (null != includeComments && 0 != includeComments) {
-      query.join(set: (s) => s.comments);
+      query.join(set: (s) => s.comments).join(object: (c) => c.user);
     }
     if (null != includeUser && 0 != includeUser) {
       query.join(object: (s) => s.user);

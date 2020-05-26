@@ -46,6 +46,7 @@ class CarpoolingController extends ResourceController {
       query.join(object: (c) => c.spot);
     }
     if (null != includeTraveler && 0 != includeTraveler) {
+      print("add traveler");
       query.join(set: (c) => c.travelers).join(object: (t) => t.user);
     }
 

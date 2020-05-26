@@ -15,5 +15,5 @@ aqueduct auth add-client --id com.rightspot.postman --connect postgres://admin_r
 
 aqueduct auth add-client --id com.rightspot.iosapp --secret c2VjcmV0Zm9ycmlnaHRzcG90 --connect postgres://admin_rightspot:rightspotpassword@localhost:5432/rightspot
 
-
+https://rightspotapi.herokuapp.com
 secret c2VjcmV0Zm9ycmlnaHRzcG90

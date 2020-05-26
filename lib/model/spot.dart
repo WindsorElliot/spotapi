@@ -7,6 +7,12 @@ import 'package:spotapi/model/image.dart';
 import 'package:spotapi/model/user.dart';
 import 'package:uuid/uuid.dart';
 
+enum SpotType {
+  reffBreak,
+  beachBreak,
+  pointBreak,
+}
+
 class Spot extends ManagedObject<_Spot> implements _Spot {
   Spot() {
     if (clientID == null) {
@@ -34,6 +40,9 @@ class _Spot {
 
   @Column(indexed: false, nullable: true)
   String description;
+
+  @Column(indexed: true, nullable: false)
+  SpotType type;
 
   @Relate(#spots, isRequired: true, onDelete: DeleteRule.cascade)
   User user;

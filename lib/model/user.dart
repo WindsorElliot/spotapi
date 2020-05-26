@@ -16,6 +16,9 @@ class _User extends ResourceOwnerTableDefinition {
   @Column(indexed: true, nullable: false)
   String email;
 
+  @Column(indexed: false, nullable: true)
+  String profilImageUrl;
+
   ManagedSet<Spot> spots;
   
   ManagedSet<Comment> comments;

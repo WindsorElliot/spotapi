@@ -5,6 +5,7 @@ import 'package:spotapi/controller/GeolocController.dart';
 import 'package:spotapi/controller/ImageController.dart';
 import 'package:spotapi/controller/RegisterController.dart';
 import 'package:spotapi/controller/SpotController.dart';
+import 'package:spotapi/controller/UserController.dart';
 import 'package:spotapi/model/user.dart';
 
 import 'spotapi.dart';
@@ -67,6 +68,11 @@ class SpotapiChannel extends ApplicationChannel {
       .route("departement/[:id]")
       .link(() => Authorizer.bearer(authServer))
       .link(() => DepartementController(context: context));
+
+    router
+      .route("user")
+      .link(() => Authorizer.bearer(authServer))
+      .link(() => UserController(context: context));
 
     router
       .route("/register")

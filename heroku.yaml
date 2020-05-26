@@ -1,0 +1,6 @@
+database:
+    host: $BDD_HOST
+    port: $BDD_PORT
+    username: $BDD_USER
+    password: $BDD_PASSWORD
+    databaseName: $BDD_NAME

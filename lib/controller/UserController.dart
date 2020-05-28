@@ -6,6 +6,17 @@ class UserController extends ResourceController {
 
   ManagedContext context;
 
+  @Operation.get()
+  Future<Response> getCurrentUser() async {
+    final ownerId = request.authorization.ownerID;
+    final query = Query<User>(context)..where((u) => u.id).equalTo(ownerId);
+    final user = await query.fetchOne();
+
+    return (null != user)
+      ? Response.ok(user)
+      : Response.notFound();
+  }
+
   @Operation.put()
   Future<Response> updateUser(@Bind.body() Map<String, dynamic> body) async {
     final ownerId = request.authorization.ownerID;
